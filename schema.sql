@@ -1,68 +1,65 @@
-DROP DATABASE IF EXISTS reviewrating;
-CREATE DATABASE reviewrating;
-USE reviewrating;
+-- DROP DATABASE IF EXISTS sdcReviews;
+-- CREATE DATABASE sdcReviews;
 
-CREATE TABLE user (
- id BIGSERIAL NOT NULL DEFAULT NOT NULL,
- product_id INTEGER NOT NULL DEFAULT NOT NULL,
- name VARCHAR(40) NOT NULL DEFAULT 'NOT NULL',
- email VARCHAR(40) NOT NULL DEFAULT 'NOT NULL'
-);
+\c sdcreviews;
 
-ALTER TABLE user ADD CONSTRAINT user_pkey PRIMARY KEY (id);
+DROP TABLE IF EXISTS review, reviews, characteristics, userInfo, characteristic, photos, characteristic_value, join_table;
+
+-- CREATE TABLE userInfo (
+--  id BIGSERIAL PRIMARY KEY NOT NULL,
+--  product_id INTEGER,
+--  reviewer_name VARCHAR(40),
+--  reviewer_email VARCHAR(40)
+-- );
 
 CREATE TABLE review (
- id BIGSERIAL NOT NULL DEFAULT NOT NULL,
- user_id INTEGER NOT NULL DEFAULT NOT NULL,
- rating SMALLINT NOT NULL DEFAULT NOT NULL,
- summary TEXT NOT NULL DEFAULT 'NOT NULL',
- body TEXT NOT NULL DEFAULT 'NOT NULL',
+ id BIGSERIAL PRIMARY KEY NOT NULL,
+ product_id BIGINT,
+ rating BIGINT,
+ date BIGINT,
+ summary TEXT,
+ body TEXT,
+ recommend BOOLEAN,
+ reported BOOLEAN,
+ reviewer_name TEXT,
+ reviewer_email TEXT,
  response TEXT,
- date VARCHAR NOT NULL DEFAULT 'NOT NULL',
- helpfulness SMALLINT NOT NULL DEFAULT NOT NULL,
- report SMALLINT
+ helpfulness BIGINT
 );
 
-
-ALTER TABLE review ADD CONSTRAINT review_pkey PRIMARY KEY (id);
-
+-- id,product_id,name
 CREATE TABLE characteristic (
- id BIGSERIAL,
- user_id INTEGER NOT NULL DEFAULT NOT NULL,
- name VARCHAR,
- value INTEGER
+ id BIGSERIAL PRIMARY KEY NOT NULL,
+ product_id BIGINT,
+ name VARCHAR(60)
 );
-
-
-ALTER TABLE characteristic ADD CONSTRAINT characteristic_pkey PRIMARY KEY (id);
 
 CREATE TABLE photos (
- id BIGSERIAL,
- review_id INTEGER NOT NULL DEFAULT NOT NULL,
- url VARCHAR
+ id BIGSERIAL PRIMARY KEY NOT NULL,
+ review_id BIGINT,
+ url VARCHAR(400)
 );
 
-
-ALTER TABLE photos ADD CONSTRAINT photos_pkey PRIMARY KEY (id);
-
+-- id,characteristic_id,review_id,value
 CREATE TABLE characteristic_value (
- id BIGSERIAL,
- value SMALLINT
+ id BIGSERIAL PRIMARY KEY,
+ characteristic_id BIGINT,
+ review_id BIGINT,
+ value BIGINT
 );
-
-
-ALTER TABLE characteristic_value ADD CONSTRAINT characteristic_value_pkey PRIMARY KEY (id);
 
 CREATE TABLE join_table (
- characteristic_id INTEGER NOT NULL DEFAULT NOT NULL,
- value_id SMALLINT NOT NULL DEFAULT NOT NULL
-);
+ characteristic_id INTEGER PRIMARY KEY NOT NULL,
+ value_id BIGINT
+ );
 
-
-ALTER TABLE join_table ADD CONSTRAINT join_table_pkey PRIMARY KEY (characteristic_id);
-
-ALTER TABLE review ADD CONSTRAINT review_user_id_fkey FOREIGN KEY (user_id) REFERENCES user(id);
-ALTER TABLE characteristic ADD CONSTRAINT characteristic_user_id_fkey FOREIGN KEY (user_id) REFERENCES user(id);
+-- ALTER TABLE review ADD CONSTRAINT review_product_id_fkey FOREIGN KEY (product_id) REFERENCES userInfo(id);
+-- ALTER TABLE characteristic ADD CONSTRAINT characteristic_product_id_fkey FOREIGN KEY (product_id) REFERENCES userInfo(id);
 ALTER TABLE photos ADD CONSTRAINT photos_review_id_fkey FOREIGN KEY (review_id) REFERENCES review(id);
 ALTER TABLE join_table ADD CONSTRAINT join_table_characteristic_id_fkey FOREIGN KEY (characteristic_id) REFERENCES characteristic(id);
 ALTER TABLE join_table ADD CONSTRAINT join_table_value_id_fkey FOREIGN KEY (value_id) REFERENCES characteristic_value(id);
+
+\copy review from files/reviews.csv delimiter ',' csv header;
+\copy photos from files/reviews_photos.csv delimiter ',' csv header;
+\copy characteristic from files/characteristics.csv delimiter ',' csv header;
+\copy characteristic_value from files/characteristic_reviews.csv delimiter ',' csv header;

@@ -1,5 +1,5 @@
--- DROP DATABASE IF EXISTS sdcReviews;
--- CREATE DATABASE sdcReviews;
+DROP DATABASE IF EXISTS sdcReviews;
+CREATE DATABASE sdcReviews;
 
 \c sdcreviews;
 
@@ -29,7 +29,6 @@ CREATE TABLE review (
  helpfulness BIGINT
 );
 
--- id,product_id,name
 CREATE TABLE characteristic (
  id BIGSERIAL PRIMARY KEY NOT NULL,
  product_id BIGINT,
@@ -42,7 +41,6 @@ CREATE TABLE photos (
  url VARCHAR(400)
 );
 
--- id,characteristic_id,review_id,value
 CREATE TABLE characteristic_value (
  id BIGSERIAL PRIMARY KEY,
  characteristic_id BIGINT,
@@ -51,13 +49,11 @@ CREATE TABLE characteristic_value (
 );
 
 CREATE TABLE join_table (
- characteristic_id INTEGER PRIMARY KEY NOT NULL,
+ id BIGSERIAL PRIMARY KEY,
+ characteristic_id INTEGER NOT NULL,
+ review_id INTEGER NOT NULL,
  value_id BIGINT
  );
-
--- ALTER TABLE review ADD CONSTRAINT review_product_id_fkey FOREIGN KEY (product_id) REFERENCES userInfo(id);
--- ALTER TABLE characteristic ADD CONSTRAINT characteristic_product_id_fkey FOREIGN KEY (product_id) REFERENCES userInfo(id);
-
 
 -- Alter time stamp before query
 -- zone via a USING clause:
@@ -66,12 +62,25 @@ CREATE TABLE join_table (
 --     USING
 --         timestamp with time zone 'epoch' + CAST(date AS BIGINT)/1000 * interval '1 second';
 
-ALTER TABLE photos ADD CONSTRAINT photos_review_id_fkey FOREIGN KEY (review_id) REFERENCES review(id);
-ALTER TABLE join_table ADD CONSTRAINT join_table_characteristic_id_fkey FOREIGN KEY (characteristic_id) REFERENCES characteristic(id);
-ALTER TABLE join_table ADD CONSTRAINT join_table_value_id_fkey FOREIGN KEY (value_id) REFERENCES characteristic_value(id);
+-- ALTER TABLE photos ADD CONSTRAINT photos_review_id_fkey FOREIGN KEY (review_id) REFERENCES review(id);
+-- ALTER TABLE join_table ADD CONSTRAINT join_table_characteristic_id_fkey FOREIGN KEY (characteristic_id) REFERENCES characteristic(id);
+-- ALTER TABLE join_table ADD CONSTRAINT join_table_review_id_fkey FOREIGN KEY (review_id) REFERENCES review(id);
 
+
+-- ALTER TABLE review ADD CONSTRAINT review_product_id_fkey FOREIGN KEY (product_id) REFERENCES products(id);
+
+-- NEW
+ALTER TABLE review ADD CONSTRAINT review_product_id_fkey FOREIGN KEY (product_id) REFERENCES products(id);
+ALTER TABLE photos ADD CONSTRAINT photos_review_id_fkey FOREIGN KEY (review_id) REFERENCES review(id);
+ALTER TABLE characteristic ADD CONSTRAINT characteristic_product_id_fkey FOREIGN KEY (product_id) REFERENCES products(id);
+ALTER TABLE join_table ADD CONSTRAINT join_table_characteristic_id_fkey FOREIGN KEY (characteristic_id) REFERENCES characteristic(id);
+ALTER TABLE join_table ADD CONSTRAINT join_table_review_id_fkey FOREIGN KEY (review_id) REFERENCES review(id);
+-- ALTER TABLE characteristic_value ADD CONSTRAINT characteristic_value_characteristic_id_fkey FOREIGN KEY (characteristic_id) REFERENCES characteristic(id);
+-- ALTER TABLE characteristic_value ADD CONSTRAINT characteristic_value_review_id_fkey FOREIGN KEY (review_id) REFERENCES review(id);
+
+
+\copy products from files/product.csv delimiter ',' csv header;
 \copy review from files/reviews.csv delimiter ',' csv header;
 \copy photos from files/reviews_photos.csv delimiter ',' csv header;
 \copy characteristic from files/characteristics.csv delimiter ',' csv header;
 \copy characteristic_value from files/characteristic_reviews.csv delimiter ',' csv header;
-\copy products from files/product.csv delimiter ',' csv header;

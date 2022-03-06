@@ -25,4 +25,14 @@ module.exports = {
       }
     })
   }
+
+  // postReviews: function (req, res) {
+  //   model.postReviews((err, results) => {
+  //     if (err) {
+  //       res.status(501).send();
+  //     } else {
+  //       res.status(201).send(results);
+  //     }
+  //   })
+  // }
 }

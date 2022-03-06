@@ -17,10 +17,9 @@ app.listen(PORT, () => {
 
 app.get('/reviews', controller.getReviews);
 app.get('/reviews/meta', controller.getMeta);
-//put
-
-//post
-
+// app.post('/reviews', controller.getReviews);
+// app.put('/reviews/:review_id/helpful', controller.putReviews);
+// app.put('/reviews/:review_id/report', controller.putReviews);
 
 //BEFORE REFACTOR
 // app.get('/reviews', (req, res) => {

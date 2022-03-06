@@ -48,12 +48,12 @@ CREATE TABLE characteristic_value (
  value BIGINT
 );
 
-CREATE TABLE join_table (
- id BIGSERIAL PRIMARY KEY,
- characteristic_id INTEGER NOT NULL,
- review_id INTEGER NOT NULL,
- value_id BIGINT
- );
+-- CREATE TABLE join_table (
+--  id BIGSERIAL PRIMARY KEY,
+--  characteristic_id INTEGER NOT NULL,
+--  review_id INTEGER NOT NULL,
+--  value_id BIGINT
+--  );
 
 -- Alter time stamp before query
 -- zone via a USING clause:
@@ -73,11 +73,8 @@ CREATE TABLE join_table (
 ALTER TABLE review ADD CONSTRAINT review_product_id_fkey FOREIGN KEY (product_id) REFERENCES products(id);
 ALTER TABLE photos ADD CONSTRAINT photos_review_id_fkey FOREIGN KEY (review_id) REFERENCES review(id);
 ALTER TABLE characteristic ADD CONSTRAINT characteristic_product_id_fkey FOREIGN KEY (product_id) REFERENCES products(id);
-ALTER TABLE join_table ADD CONSTRAINT join_table_characteristic_id_fkey FOREIGN KEY (characteristic_id) REFERENCES characteristic(id);
-ALTER TABLE join_table ADD CONSTRAINT join_table_review_id_fkey FOREIGN KEY (review_id) REFERENCES review(id);
--- ALTER TABLE characteristic_value ADD CONSTRAINT characteristic_value_characteristic_id_fkey FOREIGN KEY (characteristic_id) REFERENCES characteristic(id);
--- ALTER TABLE characteristic_value ADD CONSTRAINT characteristic_value_review_id_fkey FOREIGN KEY (review_id) REFERENCES review(id);
-
+ALTER TABLE characteristic_value ADD CONSTRAINT characteristic_value_characteristic_id_fkey FOREIGN KEY (characteristic_id) REFERENCES characteristic(id);
+ALTER TABLE characteristic_value ADD CONSTRAINT characteristic_value_review_id_fkey FOREIGN KEY (review_id) REFERENCES review(id);
 
 \copy products from files/product.csv delimiter ',' csv header;
 \copy review from files/reviews.csv delimiter ',' csv header;

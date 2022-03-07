@@ -60,14 +60,65 @@ SELECT json_agg( json_build_object(
 SELECT json_agg(row_to_json(reviews)) FROM ( SELECT id, rating, summary, recommend FROM review WHERE product_id = $1) reviews;
 
 
-  {
-    product_id: number,
-results:r
-  }
+
+
+json_build_object(SELECT row_to_json(char) FROM (SELECT characteristic.name FROM characteristic WHERE characteristic.product_id = $1) AS char), review.rating
+
 //works for just prod id and results array obj
   ("SELECT json_agg(row_to_json(reviews)) FROM ( SELECT id, rating, summary, recommend FROM review WHERE product_id = $1) reviews;", [params])
   //with null
   ("SELECT json_agg(json_build_object('review_id',review.id,'rating', review.rating,'summary', review.summary,'recommend', review.recommend,'response', review.response,'body', review.body,'date', review.date,'reviewer_name', review.reviewer_name,'helpfulness', review.helpfulness,'photos', (SELECT coalesce(photos, '[]'::json) FROM (SELECT json_agg(json_build_object( 'id', photos.id,'url', photos.url) ) AS photos from photos WHERE photos.review_id = review.id) AS photos))) AS results FROM review WHERE product_id = $1;", [params])
 
   //meta
-  SELECT json_build_object(row_to_json(reviews)) FROM ( SELECT id, rating, summary, recommend FROM review WHERE product_id = $1) reviews;
+  SELECT json_build_object('ratings', review.rating) AS ratings WHERE review.product_id = $1;
+
+  SELECT json_build_object('ratings', review.rating) As WHERE product_id = $1 reviews;
+
+
+
+
+  SELECT coalesce(photos, '[]'::json) FROM (SELECT json_agg(json_build_object( 'id', photos.id,'url', photos.url) ) AS photos from photos WHERE photos.review_id = review.id) AS photos)
+
+  'characteristics', (json_build_object(
+    'size', json_build_object(
+      'id', (characteristic_value.id),
+      'value', (characteristic_value.value) AS characteristic_reviews from characteristic_value WHERE characteristic_value.characteristic_id = characteristic.id AND characteristic_value.review_id = review.id) AS characteristic_reviews))
+
+      'photos', (SELECT coalesce(photos, '[]'::json) FROM
+        (SELECT json_agg(json_build_object( 'id', photos.id,
+        'url', photos.url) ) AS photos from photos WHERE photos.review_id = review.id) AS photos)
+
+
+
+        //
+        SELECT json_build_object(
+          'ratings', json_build_object(
+            '1', review.rating,
+            '2', review.rating,
+            '3', review.rating,
+            '4', review.rating,
+            '5', review.rating),
+          'recommended', json_build_object(
+            'true', review.recommend,
+            'false', review.recommend),
+          'characteristics', json_build_object(
+            'size', json_build_object(
+              'id', review.rating,
+              'value', review.rating
+              )
+            )
+          ) AS results FROM review WHERE product_id = $1
+
+
+          size
+          characteristic.name
+
+          json_build_object(
+            'id', characteristic_value.id,
+            'value', characteristic_value.value
+            ) AS characteristics
+            FROM characteristic_value
+            WHERE characteristic_value.review_id = review.id AS characteristics
+
+
+

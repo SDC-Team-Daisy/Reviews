@@ -41,3 +41,5 @@ app.get('/reviews/meta', controller.getMeta);
 //     }
 //   });
 // })
+
+module.exports = app;

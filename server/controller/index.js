@@ -17,7 +17,9 @@ module.exports = {
   },
 
   getMeta: function (req, res) {
-    model.getMeta((err, results) => {
+    let params = req.query.id;
+
+    model.getMeta(params, (err, results) => {
       if (err) {
         res.status(500).send();
       } else {

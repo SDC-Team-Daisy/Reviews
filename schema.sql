@@ -81,3 +81,6 @@ ALTER TABLE characteristic_value ADD CONSTRAINT characteristic_value_review_id_f
 \copy photos from files/reviews_photos.csv delimiter ',' csv header;
 \copy characteristic from files/characteristics.csv delimiter ',' csv header;
 \copy characteristic_value from files/characteristic_reviews.csv delimiter ',' csv header;
+
+CREATE INDEX ON photos (review_id);
+CREATE INDEX ON review (product_id);

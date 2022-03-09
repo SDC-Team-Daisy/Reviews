@@ -1,5 +1,5 @@
-DROP DATABASE IF EXISTS sdcReviews;
-CREATE DATABASE sdcReviews;
+-- DROP DATABASE IF EXISTS sdcReviews;
+-- CREATE DATABASE sdcReviews;
 
 \c sdcreviews;
 
@@ -69,18 +69,18 @@ CREATE TABLE characteristic_value (
 
 -- ALTER TABLE review ADD CONSTRAINT review_product_id_fkey FOREIGN KEY (product_id) REFERENCES products(id);
 
+\copy products from files/product.csv delimiter ',' csv header;
+\copy review from files/reviews.csv delimiter ',' csv header;
+\copy photos from files/reviews_photos.csv delimiter ',' csv header;
+\copy characteristic from files/characteristics.csv delimiter ',' csv header;
+\copy characteristic_value from files/characteristic_reviews.csv delimiter ',' csv header;
+
 -- NEW
 ALTER TABLE review ADD CONSTRAINT review_product_id_fkey FOREIGN KEY (product_id) REFERENCES products(id);
 ALTER TABLE photos ADD CONSTRAINT photos_review_id_fkey FOREIGN KEY (review_id) REFERENCES review(id);
 ALTER TABLE characteristic ADD CONSTRAINT characteristic_product_id_fkey FOREIGN KEY (product_id) REFERENCES products(id);
 ALTER TABLE characteristic_value ADD CONSTRAINT characteristic_value_characteristic_id_fkey FOREIGN KEY (characteristic_id) REFERENCES characteristic(id);
 ALTER TABLE characteristic_value ADD CONSTRAINT characteristic_value_review_id_fkey FOREIGN KEY (review_id) REFERENCES review(id);
-
-\copy products from files/product.csv delimiter ',' csv header;
-\copy review from files/reviews.csv delimiter ',' csv header;
-\copy photos from files/reviews_photos.csv delimiter ',' csv header;
-\copy characteristic from files/characteristics.csv delimiter ',' csv header;
-\copy characteristic_value from files/characteristic_reviews.csv delimiter ',' csv header;
 
 CREATE INDEX ON photos (review_id);
 CREATE INDEX ON review (product_id);

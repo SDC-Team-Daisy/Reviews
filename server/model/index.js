@@ -47,6 +47,19 @@ module.exports = {
         console.log(err);
         callback(err);
       })
+  },
+
+  postReviews: function (params, callback) {
+    let queryStr = 'INSERT INTO review (product_id, rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)';
+    let queryArgs = params
+
+    pool.query(queryStr, queryArgs, (err, results) => {
+      if (err) {
+        callback(err);
+      } else {
+        callback(null, results);
+      }
+    })
   }
 };
 
@@ -77,15 +90,7 @@ module.exports = {
   // }
 //}
 
-// const postReview = (callback) => {
-//   pool.query('INSERT * FROM characteristic limit 10', (err, results) => {
-//     if (err) {
-//       callback(err);
-//     } else {
-//       callback(null, results);
-//     }
-//   })
-// }
+
 
 // module.exports = {
 //   getReview

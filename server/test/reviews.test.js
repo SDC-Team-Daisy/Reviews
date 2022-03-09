@@ -10,6 +10,13 @@ it('Gets the first review', async () => {
   // expect(res.body.length).toBe(1);
 });
 
+it('Add a review to specific product_id', async () => {
+  const res = await request.post('/reviews?product_id=1');
+  // console.log(res.body);
+  expect(res.status).toBe(201);
+  // expect(res.body.length).toBe(1);
+});
+
 // const getReviews = async (reviews) => {
 //   return await request
 //   app.get('/reviews')

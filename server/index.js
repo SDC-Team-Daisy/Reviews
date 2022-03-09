@@ -1,3 +1,4 @@
+require('newrelic');
 const express = require('express');
 const app = express();
 const PORT = 3000 || process.env.PORT;
@@ -17,7 +18,7 @@ app.listen(PORT, () => {
 
 app.get('/reviews', controller.getReviews);
 app.get('/reviews/meta', controller.getMeta);
-// app.post('/reviews', controller.getReviews);
+app.post('/reviews', controller.postReviews);
 // app.put('/reviews/:review_id/helpful', controller.putReviews);
 // app.put('/reviews/:review_id/report', controller.putReviews);
 

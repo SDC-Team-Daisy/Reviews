@@ -17,6 +17,33 @@ export default function () {
   sleep(1);
 }
 
+//NO ERROR RATE
+// import http from 'k6/http';
+// import { sleep } from 'k6';
+// export const options = {
+//   scenarios: {
+//     constant_request_rate: {
+//       executor: 'constant-arrival-rate',
+//       rate: 1500, // "try to start 1500 reqs every [timeUnitVal] aka (1s)"
+//       timeUnit: '1s',
+//       duration: '15s',
+//       preAllocatedVUs: 100, // The number of VUs to pre-allocate before the test starts.
+//       maxVUs: 1000
+//     }
+//   }
+// }
+// const id = Math.floor(Math.random() * 1000011);
+// // console.log(id);
+// //generate random id
+// const url = `http://localhost:3000/reviews?id=${id}`;
+
+// export default function () {
+//   http.get(url);
+//   sleep(1);
+// }
+
+
+//EXTRA
 // import http from 'k6/http';
 // import { sleep } from 'k6';
 

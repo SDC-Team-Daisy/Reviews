@@ -1,12 +1,4 @@
-const { Pool } = require('pg')
-
-const pool = new Pool({
-  user: 'gchen',
-  host: 'localhost',
-  database: 'sdcreviews',
-  password: '',
-  port: 5432
-})
+const pool = require('../../config/config.js');
 
 module.exports = {
 
